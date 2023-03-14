@@ -1,21 +1,38 @@
-const Sequelize = require('sequelize');
-require('dotenv').config();
+const { Model, DataTypes } = require("sequelize");
+const sequelize = require("../config/connection");
 
-let sequelize;
+class Post extends Model {}
 
-if (process.env.JAWSDB_URL) {
-  sequelize = new Sequelize(process.env.JAWSDB_URL);
-} else {
-  sequelize = new Sequelize(
-    process.env.DB_NAME,
-    process.env.DB_USER,
-    process.env.DB_PASSWORD,
+Post.init(
     {
-      host: 'localhost',
-      dialect: 'mysql',
-      port: 3306
+        id: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            primaryKey: true,
+            autoIncrement: true,
+        },
+        title: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        },
+        body: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        },
+        user_id: {
+            type: DataTypes.INTEGER,
+            references: {
+                mode: "user",
+                key: "id",
+            },
+        },
+    },
+    {
+        sequelize,
+        freezeTableName: true,
+        underscored: true,
+        modelName: "post",
     }
-  );
-}
+);
 
-module.exports = sequelize;
+module.exports = Post;
